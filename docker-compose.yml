@@ -1,0 +1,52 @@
+version: "3"
+services:
+  strapi:
+    build: .
+    image: strapi:latest
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: strapiDB
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: postgres
+      DATABASE_PORT: 5432
+      JWT_SECRET: VXV7MI8LwHqu7761h9s+cw==
+      ADMIN_JWT_SECRET: xaealTRWjDUmex3MU2phkQ==
+      DATABASE_PASSWORD: 123Mtr
+      NODE_ENV: development
+    volumes:
+      - ./config:/opt/app/config
+      - ./src:/opt/app/src
+      - ./package.json:/opt/package.json
+      - ./yarn.lock:/opt/yarn.lock
+      - ./.env:/opt/app/.env
+      - ./public/uploads:/opt/app/public/uploads
+    ports:
+      - "1337:1337"
+    networks:
+      - strapiv4x
+
+  strapiDB:
+    # platform: linux/amd64 #for platform error on Apple M1 chips
+    # env_file: .env
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123Mtr
+      POSTGRES_DB: strapi
+    volumes:
+      - strapi-data:/var/lib/postgresql/data/ #using a volume
+      #- ./data:/var/lib/postgresql/data/ # if you want to use a bind folder
+    ports:
+      - "5432:5432"
+    depends_on:
+      - strapi
+    networks:
+      - strapiv4x
+
+volumes:
+  strapi-data:
+networks:
+  strapiv4x:
+    name: Strapi4x
+    driver: bridge

@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "questionanswers",
+  "info": {
+    "singularName": "questionanswer",
+    "pluralName": "questionanswers",
+    "displayName": "questionanswer"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "checked": {
+      "type": "boolean"
+    },
+    "question": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::question.question",
+      "inversedBy": "questionanswers"
+    },
+    "publicid": {
+      "type": "uid"
+    },
+    "answer": {
+      "type": "richtext"
+    }
+  }
+}
